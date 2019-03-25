@@ -8,8 +8,10 @@ class Main extends CI_Controller {
     {
         $this->load->view("/template/head.php");
 
-
-        $this->load->view("/main/index.php");
+        $query = $this->db->query("SELECT * FROM egais_acts WHERE `replyid`=? and `fsrar`=?",array($data['replyid'],$data['fsrar']));
+        $result = $query->result();
+        var_dump($this->db);
+        $this->load->view("/main/index.php",array("asds"=>'hi'));
 
 
         $this->load->view("/template/foot.php");
