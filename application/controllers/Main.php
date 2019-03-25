@@ -9,7 +9,7 @@ class Main extends CI_Controller {
         $this->load->view("/template/head.php");
 
 
-        $this->load->view("/template/main/index.php");
+        $this->load->view("/main/index.php");
 
 
         $this->load->view("/template/foot.php");
