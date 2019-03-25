@@ -8,11 +8,10 @@ class Main extends CI_Controller {
     {
         $this->load->view("/template/head.php");
 
-        $query = $this->db->query("SELECT * FROM egais_acts WHERE `replyid`=? and `fsrar`=?",array($data['replyid'],$data['fsrar']));
+        $query = $this->db->query("SELECT * FROM egais_acts_position INNER JOIN egais_product ON egais_acts_position.AlcCode = egais_product.AlcCode WHERE egais_Acts_id IN (SELECT id FROM egais_acts WHERE fsrar=? AND date(dt)=?)");
         $result = $query->result();
-        var_dump($this->db);
-        $this->load->view("/main/index.php",array("asds"=>'hi'));
-
+        $this->load->view("/main/index.php");
+        print($result);
 
         $this->load->view("/template/foot.php");
     }
