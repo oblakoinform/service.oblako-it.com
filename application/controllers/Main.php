@@ -7,7 +7,10 @@ class Main extends CI_Controller {
     public function index()
     {
         $this->load->view("/template/head.php");
-
+        $_POST['fsrar'] || ['month'];
+        $fsrar = ['fsrar'];
+        $month = ['month']
+        if(isset($fsrar) || ($month))
         $query = $this->db->query("SELECT * FROM egais_acts_position INNER JOIN egais_product ON egais_acts_position.AlcCode = egais_product.AlcCode WHERE egais_Acts_id IN (SELECT id FROM egais_acts WHERE fsrar=? AND date(dt)=?)");
         $result = $query->result();
         $this->load->view("/main/index.php");
