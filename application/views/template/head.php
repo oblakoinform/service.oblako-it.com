@@ -11,5 +11,6 @@
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/bootstrap-datepicker.min.js"></script>
     <script src="/js/bootstrap-datepicker.ru.min.js"  charset="UTF-8"></script>
+    <style>th, p {margin-left: 20px;}</style>
 </head>
 <body>
