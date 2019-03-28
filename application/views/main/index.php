@@ -11,7 +11,6 @@
         <th align="center">Справка Б</th>
     </tr>
     <?
-    $result=array();
     foreach ($result as $item){
         ?>
         <tr>

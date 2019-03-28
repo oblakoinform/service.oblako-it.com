@@ -17,15 +17,13 @@ class Main extends CI_Controller {
 
             $query = $this->db->query("SELECT * FROM egais_acts_position INNER JOIN egais_product ON egais_acts_position.AlcCode = egais_product.AlcCode WHERE egais_Acts_id IN (SELECT id FROM egais_acts WHERE fsrar=? AND month(dt)=?)",array($fsrar,$month2));
 
-            var_dump($this->db);
             $result = $query->result();
             $this->load->view("/main/index.php",array("result"=>$result));
         }
         else{
             echo "Выберите месяц и вставьте в поле ФСРАР ИД";
         }
-
-        $this->load->view("/template/foot.php");
+       $this->load->view("/template/foot.php");
     }
 
     public function acts()
