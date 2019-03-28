@@ -9,6 +9,17 @@ class ClientServices extends CI_Controller {
         
     }
 
+    public function sendcheck()
+    {
+        $jsonresult=array();
+        if ( isset($_FILES["xml_file"]) && isset($_POST['globalid'])) {
+            $xml = file_get_contents($_FILES["xml_file"]["tmp_name"]);
+
+            $jsondata = json_decode($xml);
+            $data = (array)$jsondata;
+            var_dump($data);
+        }
+    }
     public function sendact()
     {
         $jsonresult=array();
