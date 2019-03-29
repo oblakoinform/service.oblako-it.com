@@ -10,14 +10,13 @@ class Main extends CI_Controller {
         if(isset($_POST['fsrar']) && isset($_POST['month'])){
             $fsrar = $_POST['fsrar'];
             $month = $_POST['month'];
-            $month2 = date("m");
-            $month = $month2;
+
         } else {
             $fsrar ="";
             $month ="";
         }
-        if(!empty($fsrar)&&($month2)){
-            $query = $this->db->query("SELECT * FROM egais_acts_position INNER JOIN egais_product ON egais_acts_position.AlcCode = egais_product.AlcCode WHERE egais_Acts_id IN (SELECT id FROM egais_acts WHERE fsrar=? AND month(dt)=?)",array($fsrar,$month2));
+        if(!empty($fsrar)&&($month)){
+            $query = $this->db->query("SELECT * FROM egais_acts_position INNER JOIN egais_acts ON egais_acts_position.egais_Acts_id=egais_acts.id INNER JOIN egais_product ON egais_acts_position.AlcCode = egais_product.AlcCode WHERE egais_Acts_id IN (SELECT id FROM egais_acts WHERE fsrar=? AND month(dt)=?) ORDER BY `egais_acts`.`dt` ASC",array($fsrar,$month));
             $result = $query->result();
         } else {
             $result=array();
