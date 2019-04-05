@@ -19,20 +19,15 @@ if (count($actWrite) || count($actCharge)) {
         if (count($actWrite)) {
             foreach ($actWrite as $item2) {
                 if ( isset($Aproduct[$item2->AlcCode])) {
-                    if (in_array($Aproduct[$item2->AlcCode]->ProductVCode, $Apivo)) {
+                    if (!in_array($Aproduct[$item2->AlcCode]->ProductVCode, $Apivo)) {
                         ?>
                         <tr>
-                            <td align="center"><?
-                                echo $item2->AlcCode; ?></td>
-                            <td><?
-                                echo $Aproduct[$item2->AlcCode]->FullName; ?></td>
-                            <td align="center"><?= $Aproduct[$item2->AlcCode]->Capacity; ?></td>
-                            <td align="center"><?
-                                echo $item2->Quantity; ?></td>
-                            <td align="center"><?
-                                echo $Aproduct[$item2->AlcCode]->AlcVolume; ?></td>
-                            <td align="center"><?
-                                echo $Aproduct[$item2->AlcCode]->ProductVCode; ?></td>
+                            <td align="center"><?echo $item2->AlcCode;?></td>
+                            <td><?echo $Aproduct[$item2->AlcCode]->FullName; ?></td>
+                            <td align="center"><?echo $Aproduct[$item2->AlcCode]->Capacity;?></td>
+                            <td align="center"><?echo $item2->Quantity;?></td>
+                            <td align="center"><?echo $Aproduct[$item2->AlcCode]->AlcVolume;?></td>
+                            <td align="center"><?echo $Aproduct[$item2->AlcCode]->ProductVCode;?></td>
                             <td align="center">Расход</td>
                         </tr>
 
@@ -64,7 +59,7 @@ if (count($actWrite) || count($actCharge)) {
         if (count($actCharge)) {
             foreach ($actCharge as $item3) {
                 if( isset($Aproduct[$item3->AlcCode])){
-                    if (in_array($Aproduct[$item3->AlcCode]->ProductVCode, $Apivo)) {
+                    if (!in_array($Aproduct[$item3->AlcCode]->ProductVCode, $Apivo)) {
 
                         ?>
                         <tr>

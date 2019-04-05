@@ -66,7 +66,6 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
                 $('.asd[fsrar="'+fsrar+'"]').show();
                 $.ajax({
                     type: "GET",
-
                     data: {'month': $("#month").val(),'ClientRegId': fsrar},
                     url: "/main/getdata",
                     success: function (data) {
