@@ -8,7 +8,7 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
 
 </style>
 <form action = "/main/acts" method = "post">
-    <select class="form-control" id="sel1" name="month">
+    <select class="form-control" id="month" name="month">
         <?
         for($i=0;$i<12;$i++) {
             ?>
@@ -23,8 +23,9 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
     </select>
     <button  type="submit" class="btn btn-default">Показать</button>
 </form>
-    <table class="table">
+<table class="table">
     <tr>
+        <td align="center"><b>#</b></td>
         <td align="center"><b>ФСРАР</b></td>
         <td align="center"><b>ИНН</b></td>
         <td align="center"><b>КПП</b></td>
@@ -32,135 +33,28 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
         <td align="center"><b>Адрес</b></td>
     </tr>
     <?
-    foreach($result as $item){
+    $a = 1;
+    foreach($Aproducer as $producer){
         ?>
-        <tr class="btnasd" fsrar="<?=$item->ClientRegId;?>">
-            <td  align="center"><?echo $item->ClientRegId;?></td>
-            <td  align="center"><?echo $item->INN;?></td>
-            <td  align="center"><?echo $item->KPP;?></td>
-            <td  align="left"><?echo $item->FullName;?></td>
-            <td  align="left"><?echo $item->address;?></td>
+        <tr class="btnasd" fsrar="<?=$producer->ClientRegId;?>">
+            <td  align="center"><?echo $a;?></td>
+            <td  align="center"><?echo $producer->ClientRegId;?></td>
+            <td  align="center"><?echo $producer->INN;?></td>
+            <td  align="center"><?echo $producer->KPP;?></td>
+            <td  align="left"><?echo $producer->FullName;?></td>
+            <td  align="left"><?echo $producer->address;?></td>
         </tr>
-        <tr class="asd" fsrar="<?=$item->ClientRegId;?>">
-            <td colspan="5">
-                <table class="table">
-                    <tr>
-                        <td align="center"><b>Алкокод</b></td>
-                        <td align="center"><b>Наименование</b></td>
-                        <td align="center"><b>Объём</b></td>
-                        <td align="center"><b>Количество</b></td>
-                        <td align="center"><b>Крепость</b></td>
-                        <td align="center"><b>Код продукции</b></td>
-                        <td align="center"><b>Тип документа</b></td>
-                    </tr>
+        <tr class="asd" fsrar="<?=$producer->ClientRegId;?>">
+            <td colspan="6" class="htmlasd" fsrar="<?=$producer->ClientRegId;?>"> </td>
 
-                    <?
-                    if (isset($Aresult2[$item->ClientRegId])) {
-                        $result2 = $Aresult2[$item->ClientRegId];
-
-
-                        $a = 0;
-                        $b = 0;
-                        foreach ($result2 as $item2) {
-
-                            ?>
-                            <tr>
-                                <td align="center"><?
-                                    echo $item2->AlcCode; ?></td>
-                                <td><?
-                                    echo $item2->FullName; ?></td>
-                                <td align="center"><?
-                                    echo $item2->Capacity; ?></td>
-                                <td align="center"><?
-                                    echo $item2->Quantity; ?></td>
-                                <td align="center"><?
-                                    echo $item2->AlcVolume; ?></td>
-                                <td align="center"><?
-                                    echo $item2->ProductVCode; ?></td>
-                                <td align="center"><?
-                                    if($item2->type=="ActWriteOff_v3" || $item2->type=="ActWriteOffShop_v2") {
-                                        echo "Расход";
-                                    } else {
-                                        echo "Приход";
-                                    }
-                                     ?></td>
-                            </tr>
-
-                            <?
-                            $a = $a + $item2->Quantity;
-                            $b = $b + $item2->Capacity;
-                        }
-                        ?>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td align="center"><b>Итого:<?
-                                    echo $b; ?></b></td>
-                            <td align="center"><b>Итого:<?
-                                    echo $a; ?></b></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-
-                        <?
-                    }
-                    if (isset($Aresult3[$item->ClientRegId])) {
-                        $result3 = $Aresult3[$item->ClientRegId];
-                        $a = 0;
-                        $b = 0;
-                        foreach ($result3 as $item3) {
-
-                            ?>
-                            <tr>
-                                <td align="center"><?
-                                    echo $item3->AlcCode; ?></td>
-                                <td><?
-                                    echo $item3->FullName; ?></td>
-                                <td align="center"><?
-                                    echo $item3->Capacity; ?></td>
-                                <td align="center"><?
-                                    echo $item3->Quantity; ?></td>
-                                <td align="center"><?
-                                    echo $item3->AlcVolume; ?></td>
-                                <td align="center"><?
-                                    echo $item3->ProductVCode; ?></td>
-                                <td align="center"><?
-                                    if($item3->type=="ActWriteOff_v3" || $item3->type=="ActWriteOffShop_v2") {
-                                        echo "Расход";
-                                    } else {
-                                        echo "Приход";
-                                    }
-                                    ?></td>
-                            </tr>
-
-                            <?
-                            $a = $a + $item3->Quantity;
-                            $b = $b + $item3->Capacity;
-                        }
-
-                        ?>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td align="center"><b>Итого:<?
-                                    echo $b; ?></b></td>
-                            <td align="center"><b>Итого:<?
-                                    echo $a; ?></b></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <?
-                    }
-?>
-                </table>
-            </td>
         </tr>
+
         <?
+        $a++;
     }
     ?>
-    </table>
+</table>
+
 <script>
     $(document).ready(function () {
         $('.btnasd').click(function (e) {
@@ -170,6 +64,16 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
                 $('.asd[fsrar="'+fsrar+'"]').hide();
             } else {
                 $('.asd[fsrar="'+fsrar+'"]').show();
+                $.ajax({
+                    type: "GET",
+
+                    data: {'month': $("#month").val(),'ClientRegId': fsrar},
+                    url: "/main/getdata",
+                    success: function (data) {
+
+                        $('.htmlasd[fsrar="'+fsrar+'"]').html(data);
+                    },
+                });
             }
 
         });

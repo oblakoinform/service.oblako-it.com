@@ -8,7 +8,7 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
 
 </style>
 <form action = "/main/test" method = "post">
-    <select class="form-control" id="sel1" name="month">
+    <select class="form-control" id="month" name="month">
         <?
         for($i=0;$i<12;$i++) {
             ?>
@@ -44,8 +44,13 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
             <td  align="left"><?echo $producer->FullName;?></td>
             <td  align="left"><?echo $producer->address;?></td>
         </tr>
+        <tr class="asd" fsrar="<?=$producer->ClientRegId;?>">
+            <td colspan="6" class="htmlasd" fsrar="<?=$producer->ClientRegId;?>"> </td>
+
+        </tr>
 
         <?
+        $a++;
     }
     ?>
 </table>
@@ -59,6 +64,16 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
                 $('.asd[fsrar="'+fsrar+'"]').hide();
             } else {
                 $('.asd[fsrar="'+fsrar+'"]').show();
+                $.ajax({
+                    type: "GET",
+
+                    data: {'month': $("#month").val(),'ClientRegId': fsrar},
+                    url: "/main/getdata",
+                    success: function (data) {
+                    
+                        $('.htmlasd[fsrar="'+fsrar+'"]').html(data);
+                    },
+                });
             }
 
         });

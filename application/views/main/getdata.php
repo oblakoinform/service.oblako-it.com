@@ -1,120 +1,111 @@
 <?
-$a = $a+1;
-?>
-    <tr class="asd" fsrar="<?=$producer->ClientRegId;?>">
-        <td colspan="5">
-            <table class="table">
-                <tr>
-                    <td align="center"><b>Алкокод</b></td>
-                    <td align="center"><b>Наименование</b></td>
-                    <td align="center"><b>Объём</b></td>
-                    <td align="center"><b>Количество</b></td>
-                    <td align="center"><b>Крепость</b></td>
-                    <td align="center"><b>Код продукции</b></td>
-                    <td align="center"><b>Тип документа</b></td>
-                </tr>
+if (count($actWrite) || count($actCharge)) {
+    ?>
+    <table class="table">
+        <tr>
+            <td align="center"><b>Алкокод</b></td>
+            <td align="center"><b>Наименование</b></td>
+            <td align="center"><b>Объём</b></td>
+            <td align="center"><b>Количество</b></td>
+            <td align="center"><b>Крепость</b></td>
+            <td align="center"><b>Код продукции</b></td>
+            <td align="center"><b>Тип документа</b></td>
+        </tr>
 
-                <?
-                if (isset($actWrite[$item3->ClientRegId])) {
-                    $actWrite = $AactWrite[$item3->ClientRegId];
-
-
-                    $a = 0;
-                    $b = 0;
-                    foreach ($actWrite as $item3) {
-
+        <?
+        $Apivo = array(263, 520, 500, 510, 262, 261);
+        $a = 0;
+        $b = 0;
+        if (count($actWrite)) {
+            foreach ($actWrite as $item2) {
+                if ( isset($Aproduct[$item2->AlcCode])) {
+                    if (in_array($Aproduct[$item2->AlcCode]->ProductVCode, $Apivo)) {
                         ?>
                         <tr>
                             <td align="center"><?
                                 echo $item2->AlcCode; ?></td>
                             <td><?
-                                echo $item2->FullName; ?></td>
-                            <td align="center"><?
-                                echo $item2->Capacity; ?></td>
+                                echo $Aproduct[$item2->AlcCode]->FullName; ?></td>
+                            <td align="center"><?= $Aproduct[$item2->AlcCode]->Capacity; ?></td>
                             <td align="center"><?
                                 echo $item2->Quantity; ?></td>
                             <td align="center"><?
-                                echo $item2->AlcVolume; ?></td>
+                                echo $Aproduct[$item2->AlcCode]->AlcVolume; ?></td>
                             <td align="center"><?
-                                echo $item2->ProductVCode; ?></td>
-                            <td align="center"><?
-                                if($item2->type=="ActWriteOff_v3" || $item2->type=="ActWriteOffShop_v2") {
-                                    echo "Расход";
-                                } else {
-                                    echo "Приход";
-                                }
-                                ?></td>
+                                echo $Aproduct[$item2->AlcCode]->ProductVCode; ?></td>
+                            <td align="center">Расход</td>
                         </tr>
 
                         <?
                         $a = $a + $item2->Quantity;
-                        $b = $b + $item2->Capacity;
+                        $b = $b + $Aproduct[$item2->AlcCode]->Capacity;
                     }
-                    ?>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td align="center"><b>Итого:<?
-                                echo $b; ?></b></td>
-                        <td align="center"><b>Итого:<?
-                                echo $a; ?></b></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-
-                    <?
                 }
-                if (isset($actCharge[$item->ClientRegId]) && ($item2->ProductVCode=="500,510,520,261,262,263")) {
-                    $result2 = $Aresult2[$item->ClientRegId];
-                    $a = 0;
-                    $b = 0;
-                    foreach ($actCharge as $item3) {
+            }
+            ?>
+            <tr>
+                <td></td>
+                <td></td>
+                <td align="center"><b>Итого:<?
+                        echo $b; ?></b></td>
+                <td align="center"><b>Итого:<?
+                        echo $a; ?></b></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+            <?
+        }
+
+
+        $a = 0;
+        $b = 0;
+        if (count($actCharge)) {
+            foreach ($actCharge as $item3) {
+                if( isset($Aproduct[$item3->AlcCode])){
+                    if (in_array($Aproduct[$item3->AlcCode]->ProductVCode, $Apivo)) {
 
                         ?>
                         <tr>
                             <td align="center"><?
                                 echo $item3->AlcCode; ?></td>
                             <td><?
-                                echo $item3->FullName; ?></td>
+                                echo $Aproduct[$item3->AlcCode]->FullName; ?></td>
                             <td align="center"><?
-                                echo $item3->Capacity; ?></td>
+                                echo $Aproduct[$item3->AlcCode]->Capacity; ?></td>
                             <td align="center"><?
                                 echo $item3->Quantity; ?></td>
                             <td align="center"><?
-                                echo $item3->AlcVolume; ?></td>
+                                echo $Aproduct[$item3->AlcCode]->AlcVolume; ?></td>
                             <td align="center"><?
-                                echo $item3->ProductVCode; ?></td>
-                            <td align="center"><?
-                                if ($item3->type == "ActWriteOff_v3" || $item3->type == "ActWriteOffShop_v2") {
-                                    echo "Расход";
-                                } else {
-                                    echo "Приход";
-                                }
-                                ?></td>
+                                echo $Aproduct[$item3->AlcCode]->ProductVCode; ?></td>
+                            <td align="center">Приход</td>
                         </tr>
 
                         <?
                         $a = $a + $item3->Quantity;
-                        $b = $b + $item3->Capacity;
+                        $b = $b + $Aproduct[$item3->AlcCode]->Capacity;
                     }
-
-
-                    ?>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td align="center"><b>Итого:<?
-                                echo $b; ?></b></td>
-                        <td align="center"><b>Итого:<?
-                                echo $a; ?></b></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <?
                 }
-                ?>
-            </table>
-        </td>
-    </tr>
+
+            }
+            ?>
+            <tr>
+                <td></td>
+                <td></td>
+                <td align="center"><b>Итого:<?
+                        echo $b; ?></b></td>
+                <td align="center"><b>Итого:<?
+                        echo $a; ?></b></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <?
+        }
+        ?>
+    </table>
+    <?
+}
+    ?>
