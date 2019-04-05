@@ -8,7 +8,7 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
 
 </style>
 <form action = "/main/acts" method = "post">
-    <select size="1" name="month">
+    <select class="form-control" id="sel1" name="month">
         <?
         for($i=0;$i<12;$i++) {
             ?>
@@ -21,7 +21,7 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
         }
         ?>
     </select>
-    <p><input type = "submit" value = "Показать" </p>
+    <button  type="submit" class="btn btn-default">Показать</button>
 </form>
     <table class="table">
     <tr>
@@ -78,7 +78,12 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
                                 <td align="center"><?
                                     echo $item2->ProductVCode; ?></td>
                                 <td align="center"><?
-                                    echo $item2->type; ?></td>
+                                    if($item2->type=="ActWriteOff_v3" || $item2->type=="ActWriteOffShop_v2") {
+                                        echo "Расход";
+                                    } else {
+                                        echo "Приход";
+                                    }
+                                     ?></td>
                             </tr>
 
                             <?
@@ -121,7 +126,12 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
                                 <td align="center"><?
                                     echo $item3->ProductVCode; ?></td>
                                 <td align="center"><?
-                                    echo $item3->type; ?></td>
+                                    if($item3->type=="ActWriteOff_v3" || $item3->type=="ActWriteOffShop_v2") {
+                                        echo "Расход";
+                                    } else {
+                                        echo "Приход";
+                                    }
+                                    ?></td>
                             </tr>
 
                             <?
