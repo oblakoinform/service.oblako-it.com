@@ -7,7 +7,7 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
     }
 
 </style>
-<form action = "/main/test" method = "post">
+<form action = "/main/acts_pivo" method = "post">
     <select class="form-control" id="month" name="month">
         <?
         for($i=0;$i<12;$i++) {
@@ -59,17 +59,17 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
     $(document).ready(function () {
         $('.btnasd').click(function (e) {
             fsrar=$(this).attr('fsrar');
-            console.log($('.asd[fsrar="'+fsrar+'"]').is(':visible'));
             if ($('.asd[fsrar="'+fsrar+'"]').is(':visible')){
                 $('.asd[fsrar="'+fsrar+'"]').hide();
             } else {
                 $('.asd[fsrar="'+fsrar+'"]').show();
                 $.ajax({
                     type: "GET",
-                    data: {'month': $("#month").val(),'ClientRegId': fsrar},
+
+                    data: {'month': $("#month").val(),'ClientRegId': fsrar,'showpivo':"1"},
                     url: "/main/getdata",
                     success: function (data) {
-                    
+
                         $('.htmlasd[fsrar="'+fsrar+'"]').html(data);
                     },
                 });

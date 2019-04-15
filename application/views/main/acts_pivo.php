@@ -59,7 +59,6 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
     $(document).ready(function () {
         $('.btnasd').click(function (e) {
             fsrar=$(this).attr('fsrar');
-            console.log($('.asd[fsrar="'+fsrar+'"]').is(':visible'));
             if ($('.asd[fsrar="'+fsrar+'"]').is(':visible')){
                 $('.asd[fsrar="'+fsrar+'"]').hide();
             } else {
@@ -67,7 +66,7 @@ $Amonth=array("Январь","Февраль","Март","Апрель","Май"
                 $.ajax({
                     type: "GET",
 
-                    data: {'month': $("#month").val(),'ClientRegId': fsrar},
+                    data: {'month': $("#month").val(),'ClientRegId': fsrar,'showpivo':"1"},
                     url: "/main/getdata",
                     success: function (data) {
 

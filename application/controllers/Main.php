@@ -16,6 +16,7 @@ class Main extends CI_Controller {
         }
         $query = $this->db->query("SELECT AlcCode FROM `egais_acts_position` WHERE egais_Acts_id IN(SELECT id FROM egais_acts WHERE MONTH(dt)=?) GROUP BY AlcCode", array($month));
         $result = $query->result();
+        if(count($result)) {
         $AlcCode = array();
         foreach ($result as $item) {
             array_push($AlcCode, $item->AlcCode);
@@ -34,7 +35,9 @@ class Main extends CI_Controller {
         foreach($producer as $item) {
             $Aproducer[$item->ClientRegId] = $item;
         }
-
+        }else {
+            $Aproducer= array();
+        }
         $this->load->view("/main/acts.php",array("Aproducer"=>$Aproducer,"month"=>$month));
         $this->load->view("/template/foot.php");
 
@@ -53,6 +56,7 @@ class Main extends CI_Controller {
         }
         $query = $this->db->query("SELECT AlcCode FROM `egais_acts_position` WHERE egais_Acts_id IN(SELECT id FROM egais_acts WHERE MONTH(dt)=?) GROUP BY AlcCode",array($month));
         $result = $query->result();
+        if (count($result)) {
         $AlcCode = array();
         foreach($result as $item) {
             array_push($AlcCode,$item->AlcCode);
@@ -68,9 +72,12 @@ class Main extends CI_Controller {
         $query = $this->db->query("SELECT * FROM `egais_producer` WHERE INN IN('1660287087','1660273045','1656102470','1650332125')  and ClientRegId IN(SELECT DISTINCT fsrar FROM `egais_acts` WHERE MONTH(dt)=? and id in (SELECT egais_acts_id FROM egais_acts_position where AlcCode in ?)) ORDER BY INN DESC",array($month,$pivoAlcCode ));
         $producer = $query->result();
 
-        $Aproducer = array();
-        foreach($producer as $item) {
-            $Aproducer[$item->ClientRegId] = $item;
+            $Aproducer = array();
+            foreach ($producer as $item) {
+                $Aproducer[$item->ClientRegId] = $item;
+            }
+        }else {
+            $Aproducer=array();
         }
 
 
@@ -92,25 +99,29 @@ class Main extends CI_Controller {
         }
         $query = $this->db->query("SELECT AlcCode FROM `egais_acts_position` WHERE egais_Acts_id IN(SELECT id FROM egais_acts WHERE MONTH(dt)=?) GROUP BY AlcCode",array($month));
         $result = $query->result();
-        $AlcCode = array();
-        foreach($result as $item) {
-            array_push($AlcCode,$item->AlcCode);
-        }
-        $query = $this->db->query("SELECT AlcCode FROM egais_product where ProductVCode not  in (263, 520, 500, 510, 262, 261) and AlcCode in ?",array($AlcCode));
-        $result = $query->result();
-        $pivoAlcCode = array();
-        foreach($result as $item) {
-            array_push($pivoAlcCode ,$item->AlcCode);
-        }
+        if (count($result)) {
+            $AlcCode = array();
+            foreach($result as $item) {
+                array_push($AlcCode,$item->AlcCode);
+            }
+            $query = $this->db->query("SELECT AlcCode FROM egais_product where ProductVCode in (263, 520, 500, 510, 262, 261) and AlcCode in ?",array($AlcCode));
+            $result = $query->result();
+            $pivoAlcCode = array();
+            foreach($result as $item) {
+                array_push($pivoAlcCode ,$item->AlcCode);
+            }
 
-        $query = $this->db->query("SELECT * FROM `egais_producer` WHERE INN IN('1660287087','1660273045','1656102470','1650332125')  and ClientRegId IN(SELECT DISTINCT fsrar FROM `egais_acts` WHERE MONTH(dt)=? and id in (SELECT egais_acts_id FROM egais_acts_position where AlcCode in ?))",array($month,$pivoAlcCode ));
-        $producer = $query->result();
 
-        $Aproducer = array();
-        foreach($producer as $item) {
-            $Aproducer[$item->ClientRegId] = $item;
+            $query = $this->db->query("SELECT * FROM `egais_producer` WHERE INN IN('1660287087','1660273045','1656102470','1650332125')  and ClientRegId IN(SELECT DISTINCT fsrar FROM `egais_acts` WHERE MONTH(dt)=? and id in (SELECT egais_acts_id FROM egais_acts_position where AlcCode in ?)) ORDER BY INN DESC",array($month,$pivoAlcCode ));
+            $producer = $query->result();
+
+            $Aproducer = array();
+            foreach ($producer as $item) {
+                $Aproducer[$item->ClientRegId] = $item;
+            }
+        }else {
+            $Aproducer=array();
         }
-
         $this->load->view("/main/test.php",array("Aproducer"=>$Aproducer,"month"=>$month));
         $this->load->view("/template/foot.php");
 
@@ -144,7 +155,7 @@ class Main extends CI_Controller {
         }
 
 
-        $query = $this->db->query("SELECT * FROM `egais_product` WHERE AlcCode IN ?",array($AlcCode));
+        $query = $this->db->query("SELECT egais_product.AlcCode,egais_product.FullName,egais_product.Capacity,egais_product.AlcVolume,egais_product.ProductVCode,egais_producer.INN,egais_producer.KPP, egais_producer.FullName as producerFullName FROM `egais_product` INNER JOIN `egais_producer` ON egais_product.ClientRegId=egais_producer.ClientRegId WHERE AlcCode IN ?",array($AlcCode));
         $product = $query->result();
 
         $Aproduct = array();

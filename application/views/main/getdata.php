@@ -1,4 +1,5 @@
 <?
+
 if (count($actWrite) || count($actCharge)) {
     ?>
     <table class="table">
@@ -9,7 +10,17 @@ if (count($actWrite) || count($actCharge)) {
             <td align="center"><b>Количество</b></td>
             <td align="center"><b>Крепость</b></td>
             <td align="center"><b>Код продукции</b></td>
+            <?
+            if (isset($showpivo)) {
+                ?>
+                <td align="center"><b>ИНН</b></td>
+                <td align="center"><b>КПП</b></td>
+                <td align="center"><b>Наименование производителя</b></td>
+                <?
+            }
+            ?>
             <td align="center"><b>Тип документа</b></td>
+
         </tr>
 
         <?
@@ -19,7 +30,13 @@ if (count($actWrite) || count($actCharge)) {
         if (count($actWrite)) {
             foreach ($actWrite as $item2) {
                 if ( isset($Aproduct[$item2->AlcCode])) {
-                    if (!in_array($Aproduct[$item2->AlcCode]->ProductVCode, $Apivo)) {
+                    if (!isset($showpivo)) {
+                        $showmode = !in_array($Aproduct[$item2->AlcCode]->ProductVCode, $Apivo);
+                    } else {
+                        $showmode = in_array($Aproduct[$item2->AlcCode]->ProductVCode, $Apivo);
+                    }
+
+                    if ($showmode) {
                         ?>
                         <tr>
                             <td align="center"><?echo $item2->AlcCode;?></td>
@@ -28,6 +45,18 @@ if (count($actWrite) || count($actCharge)) {
                             <td align="center"><?echo $item2->Quantity;?></td>
                             <td align="center"><?echo $Aproduct[$item2->AlcCode]->AlcVolume;?></td>
                             <td align="center"><?echo $Aproduct[$item2->AlcCode]->ProductVCode;?></td>
+                        <?
+                        if (isset($showpivo)) {
+                            ?>
+                            <td align="center"><?
+                                echo $Aproduct[$item2->AlcCode]->INN; ?></td>
+                            <td align="center"><?
+                                echo $Aproduct[$item2->AlcCode]->KPP; ?></td>
+                            <td align="center"><?
+                                echo $Aproduct[$item2->AlcCode]->producerFullName; ?></td>
+                            <?
+                        }
+                            ?>
                             <td align="center">Расход</td>
                         </tr>
 
@@ -59,7 +88,13 @@ if (count($actWrite) || count($actCharge)) {
         if (count($actCharge)) {
             foreach ($actCharge as $item3) {
                 if( isset($Aproduct[$item3->AlcCode])){
-                    if (!in_array($Aproduct[$item3->AlcCode]->ProductVCode, $Apivo)) {
+                    if (!isset($showpivo)) {
+                        $showmode = !in_array($Aproduct[$item3->AlcCode]->ProductVCode, $Apivo);
+                    } else {
+                        $showmode = in_array($Aproduct[$item3->AlcCode]->ProductVCode, $Apivo);
+                    }
+
+                    if ($showmode) {
 
                         ?>
                         <tr>
