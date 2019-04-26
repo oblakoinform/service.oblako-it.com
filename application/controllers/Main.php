@@ -4,6 +4,88 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Main extends CI_Controller {
 
 
+
+    public function totalCapacity(){
+
+        if (isset($_POST['month'])) {
+            $month = $_POST['month'];
+        } else {
+            $month = date("m");
+        }
+        if (isset($_POST['year'])) {
+            $year = $_POST['year'];
+        } else {
+            $year = date("Y");
+        }
+        if (isset($_GET['excel'])){
+            $excel=1;
+            $month=$_GET['month'];
+            $year=$_GET['year'];
+        } else {
+            $excel=0;
+        }
+        if ($excel==0) {
+            $this->load->view("/template/head.php", array("title" => "Общий объем продаж и списаний"));
+        }
+        $dt1=$year."-".$month."-01";
+        $dt2=$year."-".$month."-31";
+
+        $Afsrar=array();
+        $query = $this->db->query("SELECT ROUND(SUM(egais_acts_position.Quantity*egais_product.Capacity),3) as TotalCapacity,egais_acts.fsrar FROM `egais_acts` INNER JOIN egais_acts_position ON egais_acts_position.egais_Acts_id=egais_acts.id INNER JOIN egais_product ON egais_product.AlcCode=egais_acts_position.AlcCode WHERE  egais_acts.dt>=? and egais_acts.dt<=? and egais_product.ProductVCode not  in (263, 520, 500, 510, 262, 261) and egais_acts.type IN('ActWriteOffShop_v2','ActWriteOff_v3') GROUP BY egais_acts.fsrar", array($dt1,$dt2));
+        $acts1 = $query->result();
+        $Aacts1=array();
+        foreach ($acts1  as $act) {
+            array_push($Afsrar, $act->fsrar);
+            $Aacts1[$act->fsrar]=$act;
+        }
+        $query = $this->db->query("SELECT ROUND(SUM(egais_acts_position.Quantity*egais_product.Capacity),3) as TotalCapacity,egais_acts.fsrar FROM `egais_acts` INNER JOIN egais_acts_position ON egais_acts_position.egais_Acts_id=egais_acts.id INNER JOIN egais_product ON egais_product.AlcCode=egais_acts_position.AlcCode WHERE  egais_acts.dt>=? and egais_acts.dt<=? and egais_product.ProductVCode not  in (263, 520, 500, 510, 262, 261) and egais_acts.type NOT IN('ActWriteOffShop_v2','ActWriteOff_v3') GROUP BY egais_acts.fsrar", array($dt1,$dt2));
+        $acts2 = $query->result();
+        $Aacts2=array();
+        foreach ($acts2  as $act) {
+            array_push($Afsrar, $act->fsrar);
+            $Aacts2[$act->fsrar]=$act;
+        }
+
+        $query = $this->db->query('SELECT FSRAR, ROUND(SUM(Capacity),3) AS TotalCapacity FROM `kassa_check_positions` INNER JOIN kassa_check ON kassa_check_positions.kassa_check_id=kassa_check.id WHERE kassa_check.dt_close>=? AND kassa_check.dt_close<=? AND  kassa_check_positions.ismarka=1 GROUP BY FSRAR', array($dt1,$dt2));
+        $checks = $query->result();
+
+        $Achecks=array();
+        foreach ($checks as $check){
+            array_push($Afsrar,$check->FSRAR);
+            $Achecks[$check->FSRAR]=$check;
+        }
+        unset($checks);
+        unset($acts1);
+        unset($acts2);
+
+
+        $query = $this->db->query("SELECT AlcCode FROM `egais_acts_position` WHERE egais_Acts_id IN(SELECT id FROM egais_acts WHERE MONTH(dt)=?) GROUP BY AlcCode", array($month));
+        $result = $query->result();
+
+        $Aproducer = array();
+        if (count($Afsrar)) {
+            $query = $this->db->query("SELECT * FROM `egais_producer` WHERE INN IN('1660287087','1660273045','1656102470','1650332125')  and ClientRegId IN ? order by INN DESC ", array($Afsrar));
+            $producer = $query->result();
+            foreach ($producer as $item) {
+                $Aproducer[$item->ClientRegId] = $item;
+            }
+        }
+        unset($producer);
+        unset($Afsrar);
+        if ($excel==1){
+            header("Content-Type:   application/vnd.ms-excel; charset=utf-8");
+            header("Content-type:   application/x-msexcel; charset=utf-8");
+            header("Content-Disposition: attachment; filename=".$month.$year.".xsl");
+            header("Expires: 0");
+            header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+            header("Cache-Control: private",false);
+        }
+        $this->load->view("/main/totalcapatity.php",array("month"=>$month,"year"=>$year,"checks"=>$Achecks,"Aproducer"=>$Aproducer,"Aacts1"=>$Aacts1,"Aacts2"=>$Aacts2,"excel"=>$excel));
+        if ($excel==0) {
+            $this->load->view("/template/foot.php");
+        }
+    }
+
     public function acts()
     {
         $this->load->view("/template/head.php", array("title" => "Акты по алкоголю"));
