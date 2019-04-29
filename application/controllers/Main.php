@@ -46,7 +46,7 @@ class Main extends CI_Controller {
             $Aacts2[$act->fsrar]=$act;
         }
 
-        $query = $this->db->query('SELECT FSRAR, ROUND(SUM(Capacity),3) AS TotalCapacity FROM `kassa_check_positions` INNER JOIN kassa_check ON kassa_check_positions.kassa_check_id=kassa_check.id WHERE kassa_check.dt_close>=? AND kassa_check.dt_close<=? AND  kassa_check_positions.ismarka=1 GROUP BY FSRAR', array($dt1,$dt2));
+        $query = $this->db->query('SELECT FSRAR, ROUND(SUM(Capacity),3) AS TotalCapacity FROM `kassa_check_positions` INNER JOIN kassa_check ON kassa_check_positions.kassa_check_id=kassa_check.id WHERE backalc=0 and kassa_check.dt_close>=? AND kassa_check.dt_close<=? AND  kassa_check_positions.ismarka=1 GROUP BY FSRAR', array($dt1,$dt2));
         $checks = $query->result();
 
         $Achecks=array();
@@ -226,7 +226,7 @@ class Main extends CI_Controller {
         }
 
 
-        $query = $this->db->query("SELECT * FROM `egais_product` WHERE AlcCode IN ?",array($AlcCode));
+        $query = $this->db->query("SELECT egais_product.AlcCode,egais_product.Capacity,egais_product.AlcVolume,egais_product.FullName,egais_product.ProductVCode,egais_producer.INN,egais_producer.KPP,egais_producer.FullName as producerFullName FROM `egais_product` INNER JOIN egais_producer ON egais_producer.ClientRegId=egais_product.ClientRegId  WHERE AlcCode IN ?",array($AlcCode));
         $product = $query->result();
 
         $Aproduct = array();

@@ -66,25 +66,28 @@ if (count($actWrite) || count($actCharge)) {
                     }
                 }
             }
-            ?>
-            <tr>
-                <td></td>
-                <td></td>
-                <td align="center"><b>Итого:<?
-                        echo $b; ?></b></td>
-                <td align="center"><b>Итого:<?
-                        echo $a; ?></b></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+            if ($b>0 || $a>0) {
+                ?>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td align="center"><b>Итого:<?
+                            echo $b; ?></b></td>
+                    <td align="center"><b>Итого:<?
+                            echo $a; ?></b></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
 
-            <?
+                <?
+            }
         }
 
 
         $a = 0;
         $b = 0;
+
         if (count($actCharge)) {
             foreach ($actCharge as $item3) {
                 if( isset($Aproduct[$item3->AlcCode])){
@@ -120,19 +123,21 @@ if (count($actWrite) || count($actCharge)) {
                 }
 
             }
-            ?>
-            <tr>
-                <td></td>
-                <td></td>
-                <td align="center"><b>Итого:<?
-                        echo $b; ?></b></td>
-                <td align="center"><b>Итого:<?
-                        echo $a; ?></b></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <?
+            if ($b>0 || $a>0) {
+                ?>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td align="center"><b>Итого:<?
+                            echo $b; ?></b></td>
+                    <td align="center"><b>Итого:<?
+                            echo $a; ?></b></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <?
+            }
         }
         ?>
     </table>
